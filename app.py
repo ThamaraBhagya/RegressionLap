@@ -1,5 +1,6 @@
 from flask import Flask , render_template,request
 import pickle
+import numpy as np
 
 app = Flask(__name__)
 
@@ -12,6 +13,8 @@ def prediction(lst):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+
+    pred_value=0
 
     
     if request.method == 'POST':
@@ -52,11 +55,12 @@ def index():
         traverse_list(gpu_list, gpu)
 
         pred_value = prediction(feature_list)
-        print(pred_value)
+        pred_value = np.round(pred_value[0],2)*300
+        
 
         
 
-    return render_template("index.html")
+    return render_template("index.html",pred_value=pred_value)
 
 if __name__ == "__main__":
     app.run(debug=True)
